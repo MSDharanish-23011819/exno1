@@ -22,8 +22,8 @@ STEP 6: Use zscore of to remove outliers
 
 # Coding and Output
 ```
-NAME: PANDIDHARAN G R
-REGNO: 212222040111
+NAME: DHARANISH MS
+REGNO: 212223240027
 ```
 ### DATA CLEANING
 ```
