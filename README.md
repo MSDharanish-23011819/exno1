@@ -21,151 +21,136 @@ STEP 5: Remove outliers using IQR
 STEP 6: Use zscore of to remove outliers
 
 # Coding and Output
-## Data Cleaning
+```
+NAME: PANDIDHARAN G R
+REGNO: 212222040111
+```
+### DATA CLEANING
 ```
 import pandas as pd
-df=pd.read_csv("/content/SAMPLEIDS.csv")
-df
+import numpy as np
+import matplotlib.pyplot as plt
+data = pd.read_csv("/content/SAMPLEIDS.csv")
+data.head()
+```
+![image](https://github.com/VARSHINI22009118/exno1/assets/119401150/31eddba1-280b-45e1-afb0-4b4f151e298b)
 
 ```
-![output](./Outputs/D1.png)
+data = pd.get_dummies(data)
+data.isnull().sum()
+```
+![image](https://github.com/VARSHINI22009118/exno1/assets/119401150/c3d05b23-ca1b-46de-bfce-19df245ed5e2)
 
 ```
-df.isnull().sum()
+columns_with_null = data.columns[data.isnull().any()]
+import seaborn as sns
+plt.figure(figsize=(10,10))
+sns.barplot(columns_with_null)
+plt.title("NULL VALUES")
+plt.show()
 ```
-![output](./Outputs/D2.png)
+
+![image](https://github.com/VARSHINI22009118/exno1/assets/119401150/aeccdd2b-7e48-4501-849b-4e33628d6ad5)
 
 ```
-df.isnull().any()
+for column in columns_with_null:
+    median = data[column].median()  
+    data[column].fillna(median, inplace=True)
+data.isnull().sum().sum()
 ```
-![output](./Outputs/D3.png)
+
+### IQR
 
 ```
-df.dropna()
+import pandas as pd
+import seaborn as sns
+ir = pd.read_csv("/content/iris (1).csv")
+ir.head()
 ```
-![output](./Outputs/D4.png)
 
-```
-df.fillna(0)
-```
-![output](./Outputs/D5.png)
-
-```
-df.fillna(method = "ffill")
-```
-![output](./Outputs/D6.png)
-
-```
-df.fillna(method = 'bfill')
-```
-![output](./Outputs/D7.png)
-
-```
-df_dropped = df.dropna()
-df_dropped
-```
-![output](./Outputs/D8.png)
-
-```
-df.fillna({'GENDER':'MALE','NAME':'SRI','ADDRESS':'POONAMALEE','M1':98,'M2':87,'M3':76,'M4':92,'TOTAL':305,'AVG':89.999999})
-```
-![output](./Outputs/D9.png)
-
-## IQR(Inter Quartile Range)
-```
-ir=pd.read_csv('iris.csv')
-ir
-```
-![output](./Outputs/I1.png)
+![image](https://github.com/VARSHINI22009118/exno1/assets/119401150/463a388d-f7fc-49b3-931e-6baeabc925a9)
 
 ```
 ir.describe()
 ```
-![output](./Outputs/I2.png)
+![image](https://github.com/VARSHINI22009118/exno1/assets/119401150/59541e03-224b-4ade-b2d6-12788f594151)
 
 ```
-import seaborn as sns
-import matplotlib.pyplot as plt
 sns.boxplot(x='sepal_width',data=ir)
-plt.show()
+```
+![image](https://github.com/VARSHINI22009118/exno1/assets/119401150/225999cc-b26e-4c1a-8dc2-9d396429fb14)
 
 ```
-![output](./Outputs/I3.png)
-
+c1=ir.sepal_width.quantile(0.25)
+c3=ir.sepal_width.quantile(0.75)
+iq=c3-c1
+print(c3)
 ```
- c1=ir.sepal_width.quantile(0.25)
- c3=ir.sepal_width.quantile(0.75)
- iq=c3-c1
- print(c3)
-```
-![output](./Outputs/I4.png)
+![image](https://github.com/VARSHINI22009118/exno1/assets/119401150/73e38aca-82dc-412c-a190-adff11aabcc5)
 
 ```
 rid=ir[((ir.sepal_width<(c1-1.5*iq))|(ir.sepal_width>(c3+1.5*iq)))]
 rid['sepal_width']
 ```
-![output](./Outputs/I5.png)
-
+![image](https://github.com/VARSHINI22009118/exno1/assets/119401150/0f155fa8-e20e-4757-9353-4050a7d3cc93)
 ```
 delid=ir[~((ir.sepal_width<(c1-1.5*iq))|(ir.sepal_width>(c3+1.5*iq)))]
 delid
 ```
-![output](./Outputs/I6.png)
-
+![image](https://github.com/VARSHINI22009118/exno1/assets/119401150/7aa2c415-a407-458d-859c-14bc5e62763e)
 ```
 sns.boxplot(x='sepal_width',data=delid)
 ```
-![output](./Outputs/I7.png)
 
-## Z - Score
+![image](https://github.com/VARSHINI22009118/exno1/assets/119401150/2d6cdad6-d734-45a7-8129-4d69835f0449)
+
+### Z SCORE
 ```
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 import scipy.stats as stats
-dataset=pd.read_csv("heights.csv")
+dataset=pd.read_csv("/content/heights.csv")
 dataset
 ```
-![output](./Outputs/Z1.png)
+![image](https://github.com/VARSHINI22009118/exno1/assets/119401150/2a76d30f-036a-49f5-9764-99dd2e5410a1)
 
 ```
 df = pd.read_csv("heights.csv")
 q1 = df['height'].quantile(0.25)
 q2 = df['height'].quantile(0.5)
 q3 = df['height'].quantile(0.75)
+```
+```
 iqr = q3-q1
 iqr
 ```
-![output](./Outputs/Z2.png)
+![image](https://github.com/VARSHINI22009118/exno1/assets/119401150/abd34004-f936-4ac1-8d0f-f7390f459771)
 
 ```
-low = q1- 1.5*iqr
+low = q1 - 1.5*iqr
 low
 ```
-![output](./Outputs/Z3.png)
+![image](https://github.com/VARSHINI22009118/exno1/assets/119401150/fb9c6f0e-ff7c-4c72-8119-3d8b75b64673)
 
 ```
 high = q3 + 1.5*iqr
 high
 ```
-![output](./Outputs/Z4.png)
+![image](https://github.com/VARSHINI22009118/exno1/assets/119401150/fba2ca9d-90b1-4ed1-a6fc-d1a1d5682a68)
 
 ```
 df1 = df[((df['height'] >=low)& (df['height'] <=high))]
 df1
 ```
-![output](./Outputs/Z5.png)
-
+![image](https://github.com/VARSHINI22009118/exno1/assets/119401150/48630c8d-186d-4e4c-b8fa-518d63c0f3f1)
 ```
 z = np.abs(stats.zscore(df['height']))
 z
 ```
-![output](./Outputs/Z6.png)
+![image](https://github.com/VARSHINI22009118/exno1/assets/119401150/7064433b-2251-44c4-8dae-748ea09c4b14)
 
-```
-df1 = df[z<3]
-df1
-```
-![output](./Outputs/Z7.png)
+
 # Result
-Thus we have cleaned the data and removed the outliers by detection using IQR and Z-score method.
+
+Thus the outliers are detected and removed in the given file and the final data set is saved into the file.
